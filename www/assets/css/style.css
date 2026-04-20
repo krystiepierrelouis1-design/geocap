@@ -1,0 +1,12 @@
+:root {  /*endroit ou on stocke les variables*/
+    /*variable de mon site internet*/
+    --bleu-principal:/* nom de la variable*/ #1B6CA8;/*couleur de la variable */ 
+                                                       /* couleur principale navbar et boutons */
+    --vert-succes: #10B981;       /* bonne réponse au quiz */
+    --rouge-erreur: #EF4444;      /* mauvaise réponse au quiz */
+    --jaune-score: #F59E0B;       /* scores et badges */
+    --blanc: #FFFFFF;             /* fond des pages */
+    --gris-clair: #F5F5F5;        /* deuxieme fond des pages "fond des sections" */
+    --texte-fonce: #2D2D2D;       /* couleur du texte principal */
+    --police: 'Nunito', sans-serif; /* police de tout le site */
+}
