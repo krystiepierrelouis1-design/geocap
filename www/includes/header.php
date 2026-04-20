@@ -24,7 +24,7 @@
 
     <!-- La barre du haut en arrivant sur mon site internet (logo etc) -->
     <header>
-
+        
         <!-- Barre de navigation de mon site internet -->
         <nav class="navbar">
 

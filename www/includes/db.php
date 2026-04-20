@@ -13,7 +13,7 @@ try {
         $user,
         $password
     );
-
+    
 // Affiche les erreurs clairement
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // Si la connexion rate, on passe ici
