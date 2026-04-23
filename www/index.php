@@ -2,6 +2,7 @@
 session_start();
 require_once 'includes/db.php';
 $erreur = "";
+
 if(isset($_POST['pseudo'])){
     $pseudo = $_POST['pseudo'];
     $mdp = $_POST['mdp'];
@@ -15,21 +16,47 @@ if(isset($_POST['pseudo'])){
         header('Location: accueil.php');
         exit;
     } else {
-        $erreur = "Mince ! Réessaie, ne t'inquiète pas !";
+        $erreur = "Mince ! Réessaie, ne t'inquiète pas ! 😊";
     }
 }
 ?>
 <?php require_once 'includes/header.php'; ?>
+
+<!-- Section héro -->
+<div class="hero">
+    <h1>🌍 Bienvenue sur GEOCAP !</h1>
+    <p>Apprends les capitales du monde en t'amusant !</p>
+</div>
+
 <main class="formulaire">
-    <h2>🌍 Connexion GEOCAP</h2>
+    <h2>🔐 Connexion</h2>
+
     <?php if($erreur): ?>
-        <p style="color:red"><?= $erreur ?></p>
+        <p class="message-erreur"><?= $erreur ?></p>
     <?php endif; ?>
+
     <form method="POST">
-        <input name="pseudo" placeholder="Pseudo ou email">
-        <input type="password" name="mdp" placeholder="Mot de passe">
-        <button>Connexion</button>
+        <input 
+            type="text" 
+            name="pseudo" 
+            placeholder="👤 Pseudo ou email" 
+            required>
+        <input 
+            type="password" 
+            name="mdp" 
+            placeholder="🔑 Mot de passe" 
+            required>
+        <button type="submit">
+            🚀 C'est parti pour l'aventure !
+        </button>
     </form>
-    <p>Pas de compte ? <a href="inscription.php">Inscris-toi ici !</a></p>
+
+    <p style="margin-top:20px; color:#666;">
+        Pas encore de compte ?
+        <a href="inscription.php" style="color:#1B6CA8; font-weight:700;">
+            Inscris-toi ici !
+        </a>
+    </p>
 </main>
+
 <?php require_once 'includes/footer.php'; ?>

@@ -1,179 +1,532 @@
+/* ===== IMPORT POLICE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ===== VARIABLES ===== */
 :root {
     --bleu: #1B6CA8;
+    --bleu-fonce: #0D4A7A;
     --vert: #10B981;
     --rouge: #EF4444;
     --jaune: #F59E0B;
+    --blanc: #FFFFFF;
+    --gris: #F8F9FA;
 }
+
+/* ===== BASE ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    margin: 0;
     font-family: 'Nunito', sans-serif;
+    background: var(--gris);
+    color: #2D2D2D;
 }
 
+/* ===== NAVBAR ===== */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--bleu);
-    padding: 15px;
+    background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce));
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     color: white;
-    font-weight: bold;
-    font-size: 20px;
+    font-weight: 900;
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid white;
 }
 
 .menu {
     display: flex;
-    gap: 20px;
+    gap: 8px;
     list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 .menu a {
     color: white;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 25px;
+    transition: all 0.3s;
+    font-size: 15px;
 }
 
 .menu a:hover {
-    opacity: 0.8;
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
 }
 
+/* ===== FOOTER ===== */
 footer {
-    background: var(--bleu);
+    background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu));
     color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
+    padding: 40px 30px 20px;
+    margin-top: 60px;
 }
 
 .footer-contenu {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-.footer-col {
-    margin: 10px;
+.footer-col h3 {
+    color: var(--jaune);
+    font-size: 18px;
+    margin-bottom: 12px;
 }
 
 .footer-col ul {
     list-style: none;
-    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
 }
 
 .footer-col a {
-    color: white;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-col a:hover {
+    color: white;
 }
 
 .copyright {
-    font-size: 12px;
-    opacity: 0.7;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 13px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 20px;
 }
 
-.page-quiz {
-    text-align: center;
+/* ===== BOUTONS ===== */
+.btn-principal {
+    background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce));
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(27,108,168,0.4);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-principal:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(27,108,168,0.5);
+}
+
+button {
+    background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce));
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(27,108,168,0.4);
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== FORMULAIRES ===== */
+.formulaire {
+    max-width: 480px;
+    margin: 50px auto;
     padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.formulaire h2 {
+    color: var(--bleu);
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+.formulaire input,
+.formulaire textarea,
+.formulaire select {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    transition: border 0.3s;
+    outline: none;
+}
+
+.formulaire input:focus,
+.formulaire textarea:focus {
+    border-color: var(--bleu);
+}
+
+/* ===== ACCUEIL ===== */
+.hero {
+    background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce));
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.sections-accueil {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 50px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.carte-section {
+    background: white;
+    border-radius: 20px;
+    padding: 35px 25px;
+    text-align: center;
+    text-decoration: none;
+    color: #2D2D2D;
+    width: 180px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+    border: 3px solid transparent;
+}
+
+.carte-section:hover {
+    transform: translateY(-8px);
+    border-color: var(--bleu);
+    box-shadow: 0 10px 30px rgba(27,108,168,0.2);
+}
+
+.carte-section .emoji {
+    font-size: 45px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.carte-section h2 {
+    font-size: 16px;
+    color: var(--bleu);
+    font-weight: 800;
+}
+
+/* ===== QUIZ ===== */
+.page-quiz {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.page-quiz h1 {
+    color: var(--bleu);
+    font-size: 32px;
+    margin-bottom: 30px;
 }
 
 .quiz-carte {
-    background: #F5F5F5;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 600px;
-    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
+
+.quiz-carte p {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2D2D2D;
+    margin-bottom: 25px;
+    line-height: 1.5;
 }
 
 .options {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
 }
 
 .btn-option {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
+    padding: 14px 24px;
+    border: 3px solid #E0E0E0;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 15px;
-    background: #E0E0E0;
+    font-weight: 700;
+    background: white;
     font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    min-width: 150px;
 }
 
 .btn-option:hover {
-    opacity: 0.85;
+    border-color: var(--bleu);
+    background: var(--gris);
+    transform: translateY(-2px);
 }
 
+.btn-vert {
+    background: var(--vert) !important;
+    color: white !important;
+    border-color: var(--vert) !important;
+}
+
+.btn-rouge {
+    background: var(--rouge) !important;
+    color: white !important;
+    border-color: var(--rouge) !important;
+}
+
+#resultat {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--gris);
+}
+
+#message-resultat {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+/* ===== PROFIL ===== */
 .page-profil {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
     text-align: center;
+}
+
+.profil-card {
+    background: white;
+    border-radius: 20px;
     padding: 40px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.profil-card h1 {
+    color: var(--bleu);
+    font-size: 28px;
+    margin-bottom: 10px;
 }
 
 .score-total {
-    font-size: 40px;
+    font-size: 50px;
+    font-weight: 900;
     color: var(--jaune);
-    font-weight: bold;
+    margin: 10px 0;
+}
+
+.badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--jaune), #F97316);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-weight: 700;
+    margin: 5px;
+    font-size: 14px;
+}
+
+.stat-box {
+    background: var(--gris);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+/* ===== CARTE ===== */
+.page-carte {
+    padding: 20px;
+}
+
+.page-carte h1 {
+    color: var(--bleu);
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
 }
 
 #carte {
     height: 500px;
     width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
 }
 
-.dashboard {
-    padding: 40px;
-}
-
-.formulaire {
+.infos-pays-box {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    margin-top: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #F5F5F5;
-    border-radius: 12px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.formulaire input,
-.formulaire textarea {
-    width: 100%;
-    padding: 12px;
+.infos-pays-box h2 {
+    color: var(--bleu);
+    font-size: 24px;
     margin-bottom: 15px;
-    border: 2px solid #DDD;
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: 'Nunito', sans-serif;
-    box-sizing: border-box;
 }
 
-.formulaire button,
-button {
-    background: var(--bleu);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
+.infos-pays-box p {
     font-size: 16px;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    font-weight: bold;
+    margin-bottom: 8px;
 }
 
+.drapeau {
+    height: 60px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ===== ADMIN ===== */
+.dashboard {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.dashboard h1 {
+    color: var(--bleu);
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.user-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== AIDE ===== */
+.page-aide {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.page-aide h1 {
+    color: var(--bleu);
+    font-size: 28px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.faq-item h3 {
+    color: var(--bleu);
+    margin-bottom: 8px;
+}
+
+/* ===== MESSAGES ===== */
+.message-erreur {
+    background: #FEE2E2;
+    color: var(--rouge);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.message-succes {
+    background: #D1FAE5;
+    color: var(--vert);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
+        padding: 15px;
     }
-    .footer-contenu {
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sections-accueil {
+        gap: 15px;
+    }
+    .carte-section {
+        width: 140px;
+        padding: 25px 15px;
+    }
+    .options {
         flex-direction: column;
         align-items: center;
+    }
+    .btn-option {
+        width: 100%;
     }
 }
