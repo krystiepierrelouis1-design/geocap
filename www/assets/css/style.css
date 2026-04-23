@@ -1,12 +1,141 @@
-:root {  /*endroit ou on stocke les variables*/
-    /*variable de mon site internet*/
-    --bleu-principal:/* nom de la variable*/ #1B6CA8;/*couleur de la variable */ 
-                                                       /* couleur principale navbar et boutons */
-    --vert-succes: #10B981;       /* bonne réponse au quiz */
-    --rouge-erreur: #EF4444;      /* mauvaise réponse au quiz */
-    --jaune-score: #F59E0B;       /* scores et badges */
-    --blanc: #FFFFFF;             /* fond des pages */
-    --gris-clair: #F5F5F5;        /* deuxieme fond des pages "fond des sections" */
-    --texte-fonce: #2D2D2D;       /* couleur du texte principal */
-    --police: 'Nunito', sans-serif; /* police de tout le site */
+:root { 
+    /* Variables CSS = couleurs qu’on peut réutiliser partout sur le site */
+
+    --bleu: #1B6CA8; /* couleur principale (navbar + footer) */
+    --vert: #10B981; /* couleur pour les bonnes réponses */
+    --rouge: #EF4444; /* couleur pour les mauvaises réponses */
+    --jaune: #F59E0B; /* couleur pour les scores, les points et les badges */
+}
+
+body { 
+    /* toute la page du site */
+    margin: 0; /* enlève les espaces blancs par défaut du navigateur */
+    font-family: 'Nunito', sans-serif; /* police Nunito de ta charte graphique */
+}
+
+/*NAVBAR  */
+
+.navbar { 
+    /* barre en haut du site */
+
+    display: flex; /* met le logo et le menu sur une ligne */
+    justify-content: space-between; /* met le logo à gauche et le menu à droite */
+    background: var(--bleu); /* couleur de fond de la barre */
+    padding: 15px; /* espace à l’intérieur de la barre (le contenu respire) */
+}
+
+.logo { 
+    /* nom / logo du site */
+
+    color: white; /* texte blanc */
+    font-weight: bold; /* texte en gras */
+}
+
+/* MENU  */
+
+.menu { 
+    /* liste des liens du menu */
+
+    display: flex; /* met les liens sur une ligne */
+    gap: 20px; /* espace entre chaque lien */
+    list-style: none; /* enlève les points de liste */
+}
+
+.menu a { 
+    /* liens du menu */
+
+    color: white; /* texte blanc */
+    text-decoration: none; /* enlève le soulignement */
+}
+
+/* FOOTER */
+
+footer { 
+    /* bas de page */
+
+    background: var(--bleu); /* fond bleu */
+    color: white; /* texte blanc */
+    text-align: center; /* centre le texte */
+    padding: 20px; /* espace intérieur du footer */
+}
+
+.footer-contenu { 
+    /* conteneur des colonnes */
+
+    display: flex; /* met les colonnes sur une ligne */
+    justify-content: space-around; /* espace entre les colonnes */
+    flex-wrap: wrap; /* passe en colonne sur petit écran */
+}
+
+.footer-col { 
+    /* chaque colonne */
+
+    margin: 10px; /* espace autour de chaque colonne */
+}
+
+/* QUIZ */
+
+.page-quiz { 
+    /* page du quiz */
+
+    text-align: center; /* centre tout le contenu */
+    padding: 40px; /* espace intérieur */
+}
+
+.quiz-carte { 
+    /* bloc de la question */
+
+    background: #F5F5F5; /* fond gris clair */
+    padding: 20px; /* espace intérieur */
+    border-radius: 10px; /* coins arrondis */
+}
+
+.options { 
+    /* réponses du quiz */
+
+    display: flex; /* met les boutons sur une ligne */
+    gap: 10px; /* espace entre les boutons */
+    justify-content: center; /* centre les boutons */
+}
+
+.btn-option { 
+    /* bouton de réponse */
+
+    padding: 10px; /* espace intérieur */
+    border: none; /* enlève les bordures */
+    border-radius: 8px; /* coins arrondis */
+    cursor: pointer; /* curseur en main */
+}
+
+/* PROFIL */
+
+.page-profil { 
+    /* page profil */
+
+    text-align: center; /* centre le contenu */
+    padding: 40px; /* espace intérieur */
+}
+
+.score-total { 
+    /* score affiché */
+
+    font-size: 30px; /* texte grand */
+    color: var(--jaune); /* couleur jaune pour attirer l’attention */
+}
+
+/* CARTE  */
+
+#carte { 
+    /* carte du monde */
+
+    height: 500px; /* hauteur de la carte */
+    width: 100%; /* prend toute la largeur */
+}
+
+/* ADMIN */
+
+.dashboard { 
+    /* panneau admin */
+
+    padding: 40px; /* espace intérieur */
 }
