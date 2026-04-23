@@ -34,6 +34,24 @@ if(isset($_GET['supprimer'])){
     $succes = "✅ Compte supprimé !";
 }
 
+// Email compte inactif
+if(isset($_GET['email_inactif'])){
+    $id = (int)$_GET['email_inactif'];
+    $u = $pdo->prepare('SELECT * FROM utilisateurs WHERE id=?');
+    $u->execute([$id]);
+    $user_inactif = $u->fetch();
+
+    $sujet = "GEOCAP — Tu nous manques !";
+    $message = "Bonjour " . $user_inactif['prenom'] . ",\n\n";
+    $message .= "Cela fait longtemps que tu ne t'es pas connecté sur GEOCAP !\n";
+    $message .= "Reviens explorer le monde avec nous ! 🌍\n\n";
+    $message .= "Connecte-toi sur : localhost:8080\n\n";
+    $message .= "L'équipe GEOCAP";
+
+    mail($user_inactif['email'], $sujet, $message);
+    $succes = "📧 Email envoyé à " . $user_inactif['pseudo'] . " !";
+}
+
 // Ajouter une question
 if(isset($_POST['ajouter_question'])){
     $pays_id = (int)$_POST['pays_id'];
@@ -55,15 +73,15 @@ if(isset($_GET['supprimer_question'])){
 // Récupère données
 $users = $pdo->query('SELECT * FROM utilisateurs ORDER BY id DESC')->fetchAll();
 $messages = $pdo->query('SELECT M.*, U.pseudo FROM messages M JOIN utilisateurs U ON M.expediteur_id = U.id WHERE M.lu = 0 ORDER BY M.date_envoi DESC')->fetchAll();
-$questions = $pdo->query('SELECT Q.*, P.nom_pays FROM quiz Q JOIN pays P ON Q.pays_id = P.id ORDER BY Q.id DESC')->fetchAll();
+$questions = $pdo->query('SELECT Q.*, P.nom_pays FROM quiz Q JOIN pays P ON Q.pays_id = P.id ORDER BY Q.id DESC LIMIT 20')->fetchAll();
 $pays_liste = $pdo->query('SELECT * FROM pays ORDER BY nom_pays')->fetchAll();
 
-// Comptes inactifs (pas connectés depuis 30 jours)
+// Comptes inactifs
 $inactifs = $pdo->query("SELECT * FROM utilisateurs WHERE derniere_connexion < DATE_SUB(NOW(), INTERVAL 30 DAY) AND role='enfant'")->fetchAll();
 
 // Stats
 $total_users = count($users);
-$total_questions = count($questions);
+$total_questions = $pdo->query('SELECT COUNT(*) as total FROM quiz')->fetch()['total'];
 $total_messages = count($messages);
 $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()['total'];
 ?>
@@ -88,10 +106,7 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
     text-align: center;
     box-shadow: 0 3px 15px rgba(0,0,0,0.06);
 }
-.stat-card .nombre {
-    font-size: 35px;
-    font-weight: 900;
-}
+.stat-card .nombre { font-size: 35px; font-weight: 900; }
 .stat-card .label { color: #888; font-size: 13px; }
 .section-admin {
     background: white;
@@ -140,12 +155,15 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
     display: inline-block;
     font-family: 'Nunito', sans-serif;
     transition: all 0.2s;
+    margin: 2px;
 }
 .btn-bloquer { background: #FEE2E2; color: #E74C3C; }
 .btn-debloquer { background: #D1FAE5; color: #10B981; }
 .btn-supprimer { background: #FEE2E2; color: #E74C3C; }
+.btn-email { background: #FEF3C7; color: #F59E0B; }
 .btn-action:hover { opacity: 0.8; transform: scale(1.05); }
-.form-question input, .form-question select {
+.form-question input,
+.form-question select {
     padding: 10px 14px;
     border: 2px solid #E0E0E0;
     border-radius: 10px;
@@ -167,6 +185,7 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
     transition: all 0.3s;
+    width: 100%;
 }
 .btn-ajouter:hover { transform: translateY(-2px); }
 .message-admin {
@@ -185,33 +204,15 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.nav-admin {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
     flex-wrap: wrap;
-}
-.nav-admin a {
-    background: #F0F0F0;
-    color: #2D2D2D;
-    padding: 8px 18px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-.nav-admin a:hover, .nav-admin a.actif {
-    background: #1B6CA8;
-    color: white;
+    gap: 10px;
 }
 </style>
 
 <main class="dashboard">
 
     <h1 class="dash-titre">⚙️ Tableau de bord</h1>
-    <p class="dash-sous-titre">Bienvenue, <strong><?= $_SESSION['pseudo'] ?></strong> !</p>
+    <p class="dash-sous-titre">Bienvenue, <strong><?= htmlspecialchars($_SESSION['pseudo']) ?></strong> !</p>
 
     <?php if($succes): ?>
         <p style="background:#D1FAE5; color:#10B981; padding:12px; border-radius:10px; margin-bottom:20px; font-weight:700;">
@@ -219,7 +220,7 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
         </p>
     <?php endif; ?>
 
-    <!-- Stats -->
+    <!-- Stats rapides -->
     <div class="stats-grid">
         <div class="stat-card">
             <div class="nombre" style="color:#1B6CA8;"><?= $total_users ?></div>
@@ -260,23 +261,38 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
     </div>
 
     <!-- Comptes inactifs -->
-    <?php if(!empty($inactifs)): ?>
     <div class="section-admin">
         <h2>😴 Comptes inactifs depuis +30 jours (<?= count($inactifs) ?>)</h2>
-        <?php foreach($inactifs as $u): ?>
-            <div class="alerte-inactif">
-                <div>
-                    <strong><?= htmlspecialchars($u['pseudo']) ?></strong>
-                    <small style="color:#888; display:block;">Dernière connexion : <?= $u['derniere_connexion'] ?? 'Jamais' ?></small>
+        <?php if(empty($inactifs)): ?>
+            <p style="color:#888;">Aucun compte inactif 😊</p>
+        <?php else: ?>
+            <?php foreach($inactifs as $u): ?>
+                <div class="alerte-inactif">
+                    <div>
+                        <strong><?= htmlspecialchars($u['pseudo']) ?></strong>
+                        <small style="color:#888;">
+                            Dernière connexion : <?= $u['derniere_connexion'] ?? 'Jamais' ?>
+                        </small>
+                    </div>
+                    <div>
+                        <a href="?email_inactif=<?= $u['id'] ?>"
+                           class="btn-action btn-email">
+                           📧 Envoyer email
+                        </a>
+                        <a href="?bloquer=<?= $u['id'] ?>"
+                           class="btn-action btn-bloquer">
+                           🔒 Bloquer
+                        </a>
+                        <a href="?supprimer=<?= $u['id'] ?>"
+                           class="btn-action btn-supprimer"
+                           onclick="return confirm('Supprimer ce compte ?')">
+                           🗑️ Supprimer
+                        </a>
+                    </div>
                 </div>
-                <div>
-                    <a href="?bloquer=<?= $u['id'] ?>" class="btn-action btn-bloquer">🔒 Bloquer</a>
-                    <a href="?supprimer=<?= $u['id'] ?>" class="btn-action btn-supprimer" onclick="return confirm('Supprimer ce compte ?')">🗑️ Supprimer</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 
     <!-- Gestion utilisateurs -->
     <div class="section-admin">
@@ -285,17 +301,36 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
             <div class="user-ligne">
                 <div class="user-info">
                     <strong><?= htmlspecialchars($u['pseudo']) ?></strong>
-                    <small><?= htmlspecialchars($u['email']) ?> — <?= $u['tentatives'] ?> tentative(s) échouée(s)</small>
+                    <small>
+                        <?= htmlspecialchars($u['email']) ?> —
+                        <?= $u['tentatives'] ?> tentative(s) échouée(s)
+                    </small>
                 </div>
-                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                    <span class="badge-role role-<?= $u['role'] ?>"><?= $u['role'] ?></span>
+                <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+                    <span class="badge-role role-<?= $u['role'] ?>">
+                        <?= $u['role'] ?>
+                    </span>
                     <?php if($u['role'] !== 'admin'): ?>
+                        <a href="?email_inactif=<?= $u['id'] ?>"
+                           class="btn-action btn-email">
+                           📧 Email
+                        </a>
                         <?php if($u['role'] === 'bloque'): ?>
-                            <a href="?debloquer=<?= $u['id'] ?>" class="btn-action btn-debloquer">🔓 Débloquer</a>
+                            <a href="?debloquer=<?= $u['id'] ?>"
+                               class="btn-action btn-debloquer">
+                               🔓 Débloquer
+                            </a>
                         <?php else: ?>
-                            <a href="?bloquer=<?= $u['id'] ?>" class="btn-action btn-bloquer">🔒 Bloquer</a>
+                            <a href="?bloquer=<?= $u['id'] ?>"
+                               class="btn-action btn-bloquer">
+                               🔒 Bloquer
+                            </a>
                         <?php endif; ?>
-                        <a href="?supprimer=<?= $u['id'] ?>" class="btn-action btn-supprimer" onclick="return confirm('Supprimer ce compte définitivement ?')">🗑️ Supprimer</a>
+                        <a href="?supprimer=<?= $u['id'] ?>"
+                           class="btn-action btn-supprimer"
+                           onclick="return confirm('Supprimer ce compte définitivement ?')">
+                           🗑️ Supprimer
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -304,9 +339,8 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
 
     <!-- Gestion quiz -->
     <div class="section-admin">
-        <h2>❓ Gestion des questions (<?= count($questions) ?>)</h2>
+        <h2>❓ Gestion des questions (<?= $total_questions ?>)</h2>
 
-        <!-- Ajouter une question -->
         <details style="margin-bottom:20px;">
             <summary style="cursor:pointer; color:#1B6CA8; font-weight:700; padding:10px 0;">
                 ➕ Ajouter une nouvelle question
@@ -315,7 +349,9 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
                 <select name="pays_id" required>
                     <option value="">Choisir un pays...</option>
                     <?php foreach($pays_liste as $p): ?>
-                        <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nom_pays']) ?></option>
+                        <option value="<?= $p['id'] ?>">
+                            <?= htmlspecialchars($p['nom_pays']) ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <input type="text" name="question" placeholder="La question..." required>
@@ -328,11 +364,16 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
             </form>
         </details>
 
-        <!-- Liste des questions -->
+        <!-- 20 dernières questions -->
+        <p style="color:#888; font-size:13px; margin-bottom:10px;">
+            Affichage des 20 dernières questions
+        </p>
         <?php foreach($questions as $q): ?>
             <div style="background:#F8F9FA; border-radius:12px; padding:12px 15px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
                 <div>
-                    <strong style="font-size:14px;"><?= htmlspecialchars($q['question']) ?></strong>
+                    <strong style="font-size:14px;">
+                        <?= htmlspecialchars($q['question']) ?>
+                    </strong>
                     <small style="color:#888; display:block;">
                         ✅ <?= $q['bonne_reponse'] ?> |
                         ❌ <?= $q['fausse_reponse1'] ?> |
@@ -342,7 +383,7 @@ $total_reponses = $pdo->query('SELECT COUNT(*) as total FROM reponses')->fetch()
                 <a href="?supprimer_question=<?= $q['id'] ?>"
                    class="btn-action btn-supprimer"
                    onclick="return confirm('Supprimer cette question ?')">
-                   🗑️ Supprimer
+                   🗑️
                 </a>
             </div>
         <?php endforeach; ?>
