@@ -1,34 +1,26 @@
 <?php
 session_start();
-// démarre session
-
 if(!isset($_SESSION['user_id'])){
-// si utilisateur pas connecté
-
-header("Location:index.php");
-// redirection login
-
-exit;
-// arrêt script
-
+    header('Location:index.php'); exit;
 }
 ?>
-
 <?php require_once 'includes/header.php'; ?>
-
-<h1>Bienvenue <?= $_SESSION['pseudo'] ?></h1>
-// affiche pseudo utilisateur
-
-<a href="carte.php">Carte</a>
-// lien carte
-
-<a href="quiz.php">Quiz</a>
-// lien quiz
-
-<a href="profil.php">Profil</a>
-// lien profil
-
-<a href="aide.php">Aide</a>
-// lien aide
-
+<main style="text-align:center; padding:40px;">
+    <h1>Bienvenue <?= htmlspecialchars($_SESSION['pseudo']) ?> ! 🌍</h1>
+    <p>C'est parti pour l'aventure !</p>
+    <div style="display:flex; justify-content:center; gap:20px; margin-top:30px; flex-wrap:wrap;">
+        <a href="carte.php" style="background:#1B6CA8; color:white; padding:30px; border-radius:12px; text-decoration:none;">
+            🗺️ Carte
+        </a>
+        <a href="quiz.php" style="background:#1B6CA8; color:white; padding:30px; border-radius:12px; text-decoration:none;">
+            🧠 Quiz
+        </a>
+        <a href="profil.php" style="background:#1B6CA8; color:white; padding:30px; border-radius:12px; text-decoration:none;">
+            ⭐ Profil
+        </a>
+        <a href="aide.php" style="background:#1B6CA8; color:white; padding:30px; border-radius:12px; text-decoration:none;">
+            💬 Aide
+        </a>
+    </div>
+</main>
 <?php require_once 'includes/footer.php'; ?>

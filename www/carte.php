@@ -1,98 +1,42 @@
 <?php
 session_start();
-// session
-
 require_once 'includes/db.php';
-// base
-
 if(!isset($_SESSION['user_id'])){
-// sécurité
-
-header("Location:index.php");
-// login
-
-exit;
-// stop
-
+    header('Location:index.php'); exit;
 }
 ?>
-
 <?php require_once 'includes/header.php'; ?>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-// CSS carte
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-// JS carte
-
-<div id="carte"></div>
-// conteneur carte
-
-<div id="infos-pays" style="display:none;">
-// bloc infos caché
-
-<h2 id="nom-pays"></h2>
-// nom pays
-
-<p>Capitale : <span id="capitale"></span></p>
-// capitale
-
-<p>Continent : <span id="continent"></span></p>
-// continent
-
-<a id="btn-jouer" href="#">
-// bouton jouer
-
-🎮 Jouer avec ce pays !
-
-</a>
-// fin bouton
-
-</div>
-// fin bloc
-
+<main style="padding:20px;">
+    <h1>🗺️ Carte du monde</h1>
+    <div id="carte"></div>
+    <div id="infos-pays" style="display:none; background:#F5F5F5; padding:20px; border-radius:10px; margin-top:20px;">
+        <h2 id="nom-pays"></h2>
+        <p>Capitale : <strong><span id="capitale"></span></strong></p>
+        <p>Continent : <span id="continent"></span></p>
+        <a id="btn-jouer" href="#" style="background:#1B6CA8; color:white; padding:10px 20px; border-radius:8px; text-decoration:none;">
+            🎮 Jouer avec ce pays !
+        </a>
+    </div>
+</main>
 <script>
-
 var carte = L.map("carte").setView([20,0],2);
-// création carte
-
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(carte);
-// fond carte
-
 carte.on("click", function(e){
-// clic carte
-
-var lat = e.latlng.lat;
-// latitude
-
-var lng = e.latlng.lng;
-// longitude
-
-fetch("api_pays.php?lat="+lat+"&lng="+lng)
-// appel API
-
-.then(r=>r.json())
-// transforme JSON
-
-.then(data=>{
-// résultat
-
-document.getElementById("nom-pays").textContent = data.nom;
-// nom
-
-document.getElementById("capitale").textContent = data.capitale;
-// capitale
-
-document.getElementById("continent").textContent = data.continent;
-// continent
-
-document.getElementById("infos-pays").style.display="block";
-// affiche bloc
-
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    fetch("api_pays.php?lat="+lat+"&lng="+lng)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+        if(data.nom_pays){
+            document.getElementById("nom-pays").textContent = data.nom_pays;
+            document.getElementById("capitale").textContent = data.capitale;
+            document.getElementById("continent").textContent = data.continent;
+            document.getElementById("btn-jouer").href = "quiz.php?pays_id="+data.id;
+            document.getElementById("infos-pays").style.display = "block";
+        }
+    });
 });
-
-});
-
 </script>
-
 <?php require_once 'includes/footer.php'; ?>

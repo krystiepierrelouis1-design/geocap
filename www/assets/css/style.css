@@ -1,141 +1,179 @@
-:root { 
-    /* Variables CSS = couleurs qu’on peut réutiliser partout sur le site */
-
-    --bleu: #1B6CA8; /* couleur principale (navbar + footer) */
-    --vert: #10B981; /* couleur pour les bonnes réponses */
-    --rouge: #EF4444; /* couleur pour les mauvaises réponses */
-    --jaune: #F59E0B; /* couleur pour les scores, les points et les badges */
+:root {
+    --bleu: #1B6CA8;
+    --vert: #10B981;
+    --rouge: #EF4444;
+    --jaune: #F59E0B;
 }
 
-body { 
-    /* toute la page du site */
-    margin: 0; /* enlève les espaces blancs par défaut du navigateur */
-    font-family: 'Nunito', sans-serif; /* police Nunito de ta charte graphique */
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
 }
 
-/*NAVBAR  */
-
-.navbar { 
-    /* barre en haut du site */
-
-    display: flex; /* met le logo et le menu sur une ligne */
-    justify-content: space-between; /* met le logo à gauche et le menu à droite */
-    background: var(--bleu); /* couleur de fond de la barre */
-    padding: 15px; /* espace à l’intérieur de la barre (le contenu respire) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bleu);
+    padding: 15px;
 }
 
-.logo { 
-    /* nom / logo du site */
-
-    color: white; /* texte blanc */
-    font-weight: bold; /* texte en gras */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
 }
 
-/* MENU  */
-
-.menu { 
-    /* liste des liens du menu */
-
-    display: flex; /* met les liens sur une ligne */
-    gap: 20px; /* espace entre chaque lien */
-    list-style: none; /* enlève les points de liste */
+.menu {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.menu a { 
-    /* liens du menu */
-
-    color: white; /* texte blanc */
-    text-decoration: none; /* enlève le soulignement */
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-/* FOOTER */
-
-footer { 
-    /* bas de page */
-
-    background: var(--bleu); /* fond bleu */
-    color: white; /* texte blanc */
-    text-align: center; /* centre le texte */
-    padding: 20px; /* espace intérieur du footer */
+.menu a:hover {
+    opacity: 0.8;
 }
 
-.footer-contenu { 
-    /* conteneur des colonnes */
-
-    display: flex; /* met les colonnes sur une ligne */
-    justify-content: space-around; /* espace entre les colonnes */
-    flex-wrap: wrap; /* passe en colonne sur petit écran */
+footer {
+    background: var(--bleu);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
 }
 
-.footer-col { 
-    /* chaque colonne */
-
-    margin: 10px; /* espace autour de chaque colonne */
+.footer-contenu {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-/* QUIZ */
-
-.page-quiz { 
-    /* page du quiz */
-
-    text-align: center; /* centre tout le contenu */
-    padding: 40px; /* espace intérieur */
+.footer-col {
+    margin: 10px;
 }
 
-.quiz-carte { 
-    /* bloc de la question */
-
-    background: #F5F5F5; /* fond gris clair */
-    padding: 20px; /* espace intérieur */
-    border-radius: 10px; /* coins arrondis */
+.footer-col ul {
+    list-style: none;
+    padding: 0;
 }
 
-.options { 
-    /* réponses du quiz */
-
-    display: flex; /* met les boutons sur une ligne */
-    gap: 10px; /* espace entre les boutons */
-    justify-content: center; /* centre les boutons */
+.footer-col a {
+    color: white;
+    text-decoration: none;
 }
 
-.btn-option { 
-    /* bouton de réponse */
-
-    padding: 10px; /* espace intérieur */
-    border: none; /* enlève les bordures */
-    border-radius: 8px; /* coins arrondis */
-    cursor: pointer; /* curseur en main */
+.copyright {
+    font-size: 12px;
+    opacity: 0.7;
 }
 
-/* PROFIL */
-
-.page-profil { 
-    /* page profil */
-
-    text-align: center; /* centre le contenu */
-    padding: 40px; /* espace intérieur */
+.page-quiz {
+    text-align: center;
+    padding: 40px;
 }
 
-.score-total { 
-    /* score affiché */
-
-    font-size: 30px; /* texte grand */
-    color: var(--jaune); /* couleur jaune pour attirer l’attention */
+.quiz-carte {
+    background: #F5F5F5;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: auto;
 }
 
-/* CARTE  */
-
-#carte { 
-    /* carte du monde */
-
-    height: 500px; /* hauteur de la carte */
-    width: 100%; /* prend toute la largeur */
+.options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-/* ADMIN */
+.btn-option {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    background: #E0E0E0;
+    font-family: 'Nunito', sans-serif;
+}
 
-.dashboard { 
-    /* panneau admin */
+.btn-option:hover {
+    opacity: 0.85;
+}
 
-    padding: 40px; /* espace intérieur */
+.page-profil {
+    text-align: center;
+    padding: 40px;
+}
+
+.score-total {
+    font-size: 40px;
+    color: var(--jaune);
+    font-weight: bold;
+}
+
+#carte {
+    height: 500px;
+    width: 100%;
+}
+
+.dashboard {
+    padding: 40px;
+}
+
+.formulaire {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #F5F5F5;
+    border-radius: 12px;
+}
+
+.formulaire input,
+.formulaire textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+}
+
+.formulaire button,
+button {
+    background: var(--bleu);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .footer-contenu {
+        flex-direction: column;
+        align-items: center;
+    }
 }
