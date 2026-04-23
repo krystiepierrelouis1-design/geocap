@@ -12,10 +12,10 @@ if($correct == 1){
     $stmt2 = $pdo->prepare('SELECT id FROM scores WHERE utilisateur_id = ?');
     $stmt2->execute([$user_id]);
     if($stmt2->fetch()){
-        $stmt3 = $pdo->prepare('UPDATE scores SET points = points + 10 WHERE utilisateur_id = ?');
+        $stmt3 = $pdo->prepare('UPDATE scores SET score = score + 10 WHERE utilisateur_id = ?');
         $stmt3->execute([$user_id]);
     } else {
-        $stmt3 = $pdo->prepare('INSERT INTO scores (utilisateur_id, points, continent, badges) VALUES (?, 10, "", "")');
+        $stmt3 = $pdo->prepare('INSERT INTO scores (utilisateur_id, score, continent, badges) VALUES (?, 10, "", "")');
         $stmt3->execute([$user_id]);
     }
 }

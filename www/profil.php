@@ -18,15 +18,15 @@ $stats = $stmt3->fetch();
 <main class="page-profil">
     <h1>👤 Mon Profil</h1>
     <p><strong><?= htmlspecialchars($user['pseudo']) ?></strong></p>
-    <p class="score-total"><?= $scores['points'] ?? 0 ?> points</p>
+    <p class="score-total"><?= $scores['score'] ?? 0 ?> points</p>
     <div>
-        <?php if($scores && $scores['points'] >= 100): ?>
+        <?php if($scores && $scores['score'] >= 100): ?>
             <span style="background:#F59E0B; padding:8px; border-radius:8px;">🥉 Explorer</span>
         <?php endif; ?>
-        <?php if($scores && $scores['points'] >= 500): ?>
+        <?php if($scores && $scores['score'] >= 500): ?>
             <span style="background:#F59E0B; padding:8px; border-radius:8px;">🥈 Aventurier</span>
         <?php endif; ?>
-        <?php if($scores && $scores['points'] >= 1000): ?>
+        <?php if($scores && $scores['score'] >= 1000): ?>
             <span style="background:#F59E0B; padding:8px; border-radius:8px;">🥇 Expert</span>
         <?php endif; ?>
     </div>

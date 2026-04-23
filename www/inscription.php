@@ -18,7 +18,7 @@ if(isset($_POST['pseudo'])){
         $stmt2 = $pdo->prepare('INSERT INTO utilisateurs (nom, prenom, pseudo, email, mot_de_passe, role, statut, derniere_connexion) VALUES (?, ?, ?, ?, ?, "enfant", "actif", NOW())');
         $stmt2->execute([$nom, $prenom, $pseudo, $email, $mdp_chiffre]);
         $new_id = $pdo->lastInsertId();
-        $stmt3 = $pdo->prepare('INSERT INTO scores (utilisateur_id, points, continent, badges) VALUES (?, 0, "", "")');
+        $stmt3 = $pdo->prepare('INSERT INTO scores (utilisateur_id, score, continent, badges) VALUES (?, 0, "", "")');
         $stmt3->execute([$new_id]);
         $_SESSION['user_id'] = $new_id;
         $_SESSION['pseudo'] = $pseudo;
