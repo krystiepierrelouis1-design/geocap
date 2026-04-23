@@ -190,6 +190,7 @@ button:hover {
     font-family: 'Nunito', sans-serif;
     transition: border 0.3s;
     outline: none;
+    color: #2D2D2D;
 }
 
 .formulaire input:focus,
@@ -197,7 +198,7 @@ button:hover {
     border-color: var(--bleu);
 }
 
-/* ===== ACCUEIL ===== */
+/* ===== HERO ===== */
 .hero {
     background: linear-gradient(135deg, var(--bleu), var(--bleu-fonce));
     color: white;
@@ -217,6 +218,7 @@ button:hover {
     margin-bottom: 30px;
 }
 
+/* ===== ACCUEIL ===== */
 .sections-accueil {
     display: flex;
     justify-content: center;
@@ -258,6 +260,12 @@ button:hover {
     font-weight: 800;
 }
 
+.carte-section p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+}
+
 /* ===== QUIZ ===== */
 .page-quiz {
     max-width: 700px;
@@ -269,7 +277,7 @@ button:hover {
 .page-quiz h1 {
     color: var(--bleu);
     font-size: 32px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .quiz-carte {
@@ -292,6 +300,8 @@ button:hover {
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 
 .btn-option {
@@ -299,12 +309,14 @@ button:hover {
     border: 3px solid #E0E0E0;
     border-radius: 15px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     background: white;
+    color: #2D2D2D;
     font-family: 'Nunito', sans-serif;
     transition: all 0.3s;
-    min-width: 150px;
+    width: 80%;
+    text-align: center;
 }
 
 .btn-option:hover {
@@ -329,7 +341,8 @@ button:hover {
     margin-top: 25px;
     padding: 20px;
     border-radius: 15px;
-    background: var(--gris);
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
 
 #message-resultat {
@@ -383,18 +396,26 @@ button:hover {
     border-radius: 15px;
     padding: 20px;
     margin-top: 15px;
+    text-align: left;
+}
+
+.stat-box p {
+    margin-bottom: 10px;
+    font-size: 16px;
 }
 
 /* ===== CARTE ===== */
 .page-carte {
     padding: 20px;
+    max-width: 1000px;
+    margin: auto;
 }
 
 .page-carte h1 {
     color: var(--bleu);
     text-align: center;
     font-size: 28px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #carte {
@@ -414,6 +435,7 @@ button:hover {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
 
 .infos-pays-box h2 {
@@ -424,11 +446,12 @@ button:hover {
 
 .infos-pays-box p {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
 .drapeau {
-    height: 60px;
+    height: 70px;
     border-radius: 8px;
     margin-bottom: 15px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -478,11 +501,17 @@ button:hover {
     padding: 20px;
     margin-bottom: 15px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 4px solid var(--bleu);
 }
 
 .faq-item h3 {
     color: var(--bleu);
     margin-bottom: 8px;
+}
+
+.faq-item p {
+    color: #666;
+    line-height: 1.6;
 }
 
 /* ===== MESSAGES ===== */
@@ -522,11 +551,10 @@ button:hover {
         width: 140px;
         padding: 25px 15px;
     }
-    .options {
-        flex-direction: column;
-        align-items: center;
-    }
     .btn-option {
         width: 100%;
+    }
+    .hero h1 {
+        font-size: 26px;
     }
 }
