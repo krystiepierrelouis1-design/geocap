@@ -317,6 +317,7 @@ button:hover {
     transition: all 0.3s;
     width: 80%;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .btn-option:hover {
@@ -419,7 +420,7 @@ button:hover {
 }
 
 #carte {
-    height: 500px;
+    height: 650px;
     width: 100%;
     border-radius: 20px;
     box-shadow: 0 5px 25px rgba(0,0,0,0.15);
@@ -482,79 +483,4 @@ button:hover {
 }
 
 /* ===== AIDE ===== */
-.page-aide {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-.page-aide h1 {
-    color: var(--bleu);
-    font-size: 28px;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.faq-item {
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    border-left: 4px solid var(--bleu);
-}
-
-.faq-item h3 {
-    color: var(--bleu);
-    margin-bottom: 8px;
-}
-
-.faq-item p {
-    color: #666;
-    line-height: 1.6;
-}
-
-/* ===== MESSAGES ===== */
-.message-erreur {
-    background: #FEE2E2;
-    color: var(--rouge);
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-.message-succes {
-    background: #D1FAE5;
-    color: var(--vert);
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-    }
-    .menu {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .sections-accueil {
-        gap: 15px;
-    }
-    .carte-section {
-        width: 140px;
-        padding: 25px 15px;
-    }
-    .btn-option {
-        width: 100%;
-    }
-    .hero h1 {
-        font-size: 26px;
-    }
-}
+.page-aide

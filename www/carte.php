@@ -13,17 +13,17 @@ if(!isset($_SESSION['user_id'])){
 <main class="page-carte">
     <h1>🗺️ Explore le monde !</h1>
     <p style="text-align:center; color:#666; margin-bottom:20px;">
-        Clique sur un pays pour découvrir sa capitale !
+        Clique sur un pays pour découvrir sa capitale ! 🌍
     </p>
 
     <!-- Carte du monde -->
     <div id="carte"></div>
 
     <!-- Infos pays -->
-    <div id="infos-pays" class="infos-pays-box" style="display:none;">
+    <div id="infos-pays" class="infos-pays-box" style="display:none; margin-top:20px;">
 
         <!-- Drapeau -->
-        <img id="drapeau" src="" alt="drapeau" class="drapeau">
+        <img id="drapeau" src="" alt="drapeau" class="drapeau" style="display:none;">
 
         <!-- Nom pays -->
         <h2 id="nom-pays"></h2>
@@ -44,12 +44,14 @@ if(!isset($_SESSION['user_id'])){
 </main>
 
 <script>
-// Création de la carte
+// Création de la carte centrée sur le monde
 var carte = L.map("carte").setView([20, 0], 2);
 
-// Fond de carte
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '© OpenStreetMap'
+// Fond de carte en FRANÇAIS (CartoDB)
+L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    attribution: '© OpenStreetMap © CartoDB',
+    subdomains: 'abcd',
+    maxZoom: 19
 }).addTo(carte);
 
 // Marqueur actuel
@@ -69,7 +71,10 @@ carte.on("click", function(e) {
 
             // Ajoute un marqueur sur la carte
             if(marqueur) carte.removeLayer(marqueur);
-            marqueur = L.marker([lat, lng]).addTo(carte);
+            marqueur = L.marker([lat, lng])
+                .bindPopup("<b>" + data.nom_pays + "</b><br>Capitale : " + data.capitale)
+                .addTo(carte)
+                .openPopup();
 
             // Affiche les infos
             document.getElementById("nom-pays").textContent = data.nom_pays;
@@ -80,8 +85,9 @@ carte.on("click", function(e) {
 
             // Affiche le drapeau
             if(data.drapeau_url) {
-                document.getElementById("drapeau").src = data.drapeau_url;
-                document.getElementById("drapeau").style.display = "block";
+                var drapeau = document.getElementById("drapeau");
+                drapeau.src = data.drapeau_url;
+                drapeau.style.display = "block";
             }
 
             // Lien vers quiz
