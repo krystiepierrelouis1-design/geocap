@@ -10,96 +10,195 @@ if(!isset($_SESSION['user_id'])){
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<style>
+.page-carte { padding: 20px; max-width: 1100px; margin: auto; }
+.page-carte h1 { color: #1B6CA8; text-align: center; font-size: 28px; margin-bottom: 5px; }
+.page-carte p.sous-titre { text-align: center; color: #888; margin-bottom: 20px; }
+#carte { height: 650px; width: 100%; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); }
+.infos-pays-box {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    margin-top: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: none;
+}
+.infos-pays-box h2 { color: #1B6CA8; font-size: 24px; margin-bottom: 15px; }
+.infos-pays-box .info-ligne {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #F0F0F0;
+    text-align: left;
+    font-size: 15px;
+}
+.infos-pays-box .info-ligne:last-child { border: none; }
+.drapeau-img { height: 70px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.btn-jouer-pays {
+    background: linear-gradient(135deg, #1B6CA8, #0D4A7A);
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+.btn-jouer-pays:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(27,108,168,0.4); }
+</style>
+
 <main class="page-carte">
     <h1>🗺️ Explore le monde !</h1>
-    <p style="text-align:center; color:#666; margin-bottom:20px;">
-        Clique sur un pays pour découvrir sa capitale ! 🌍
-    </p>
+    <p class="sous-titre">Clique sur un pays pour découvrir sa capitale ! 🌍</p>
 
-    <!-- Carte du monde -->
     <div id="carte"></div>
 
-    <!-- Infos pays -->
-    <div id="infos-pays" class="infos-pays-box" style="display:none; margin-top:20px;">
-
-        <!-- Drapeau -->
-        <img id="drapeau" src="" alt="drapeau" class="drapeau" style="display:none;">
-
-        <!-- Nom pays -->
+    <div class="infos-pays-box" id="infos-pays">
+        <img id="drapeau" src="" alt="drapeau" class="drapeau-img" style="display:none;">
         <h2 id="nom-pays"></h2>
-
-        <!-- Infos -->
-        <p>🏛️ Capitale : <strong><span id="capitale"></span></strong></p>
-        <p>🌍 Continent : <span id="continent"></span></p>
-        <p>📏 Superficie : <span id="superficie"></span> km²</p>
-        <p>🌤️ Climat : <span id="climat"></span></p>
-
-        <!-- Bouton jouer -->
-        <br>
-        <a id="btn-jouer" href="#" class="btn-principal">
+        <div class="info-ligne">
+            <span>🏛️ Capitale</span>
+            <strong id="capitale"></strong>
+        </div>
+        <div class="info-ligne">
+            <span>🌍 Continent</span>
+            <span id="continent"></span>
+        </div>
+        <div class="info-ligne">
+            <span>📏 Superficie</span>
+            <span id="superficie"></span>
+        </div>
+        <div class="info-ligne">
+            <span>🌤️ Climat</span>
+            <span id="climat"></span>
+        </div>
+        <a id="btn-jouer" href="#" class="btn-jouer-pays">
             🎮 Jouer avec ce pays !
         </a>
-
     </div>
 </main>
 
 <script>
-// Création de la carte centrée sur le monde
-var carte = L.map("carte").setView([20, 0], 2);
+// Création de la carte
+var carte = L.map("carte", {
+    center: [20, 0],
+    zoom: 2,
+    minZoom: 2
+});
 
-// Fond de carte en FRANÇAIS (CartoDB)
+// Fond de carte en français (CartoDB)
 L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
     attribution: '© OpenStreetMap © CartoDB',
     subdomains: 'abcd',
     maxZoom: 19
 }).addTo(carte);
 
-// Marqueur actuel
-var marqueur = null;
+// Couleur par défaut et au survol
+var styleDefaut = {
+    fillColor: '#1B6CA8',
+    fillOpacity: 0.15,
+    color: '#1B6CA8',
+    weight: 1
+};
 
-// Quand on clique sur la carte
-carte.on("click", function(e) {
-    var lat = e.latlng.lat;
-    var lng = e.latlng.lng;
+var styleSurvol = {
+    fillColor: '#1B6CA8',
+    fillOpacity: 0.4,
+    color: '#0D4A7A',
+    weight: 2
+};
 
-    // Appel API pour récupérer les infos du pays
-    fetch("api_pays.php?lat=" + lat + "&lng=" + lng)
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
+var styleSelectionne = {
+    fillColor: '#F59E0B',
+    fillOpacity: 0.5,
+    color: '#E67E22',
+    weight: 2
+};
 
-        if(data.nom_pays) {
+var layerSelectionne = null;
+var geoJsonLayer = null;
 
-            // Ajoute un marqueur sur la carte
-            if(marqueur) carte.removeLayer(marqueur);
-            marqueur = L.marker([lat, lng])
-                .bindPopup("<b>" + data.nom_pays + "</b><br>Capitale : " + data.capitale)
-                .addTo(carte)
-                .openPopup();
+// Charge le GeoJSON des pays du monde
+fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+.then(function(r){ return r.json(); })
+.then(function(data){
+    geoJsonLayer = L.geoJson(data, {
+        style: styleDefaut,
+        onEachFeature: function(feature, layer){
+            // Au survol
+            layer.on('mouseover', function(){
+                if(layer !== layerSelectionne){
+                    layer.setStyle(styleSurvol);
+                }
+                layer.bindTooltip(
+                    '<strong>' + feature.properties.ADMIN + '</strong>',
+                    {permanent: false, direction: 'center'}
+                ).openTooltip();
+            });
 
-            // Affiche les infos
-            document.getElementById("nom-pays").textContent = data.nom_pays;
-            document.getElementById("capitale").textContent = data.capitale;
-            document.getElementById("continent").textContent = data.continent;
-            document.getElementById("superficie").textContent = data.superficie;
-            document.getElementById("climat").textContent = data.climat;
+            layer.on('mouseout', function(){
+                if(layer !== layerSelectionne){
+                    layer.setStyle(styleDefaut);
+                }
+            });
 
-            // Affiche le drapeau
-            if(data.drapeau_url) {
-                var drapeau = document.getElementById("drapeau");
-                drapeau.src = data.drapeau_url;
-                drapeau.style.display = "block";
-            }
+            // Au clic sur le pays
+            layer.on('click', function(){
+                // Remet l'ancien pays en style normal
+                if(layerSelectionne && layerSelectionne !== layer){
+                    layerSelectionne.setStyle(styleDefaut);
+                }
+                layer.setStyle(styleSelectionne);
+                layerSelectionne = layer;
 
-            // Lien vers quiz
-            document.getElementById("btn-jouer").href = "quiz.php?pays_id=" + data.id;
+                var nomPays = feature.properties.ADMIN;
 
-            // Affiche le bloc infos
-            document.getElementById("infos-pays").style.display = "block";
+                // Cherche le pays dans notre BDD
+                fetch('api_pays.php?nom=' + encodeURIComponent(nomPays))
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    var box = document.getElementById('infos-pays');
+                    box.style.display = 'block';
 
-            // Scroll vers les infos
-            document.getElementById("infos-pays").scrollIntoView({behavior: "smooth"});
+                    if(data.nom_pays){
+                        document.getElementById('nom-pays').textContent = data.nom_pays;
+                        document.getElementById('capitale').textContent = data.capitale;
+                        document.getElementById('continent').textContent = data.continent;
+                        document.getElementById('superficie').textContent = data.superficie + ' km²';
+                        document.getElementById('climat').textContent = data.climat;
+
+                        if(data.drapeau_url){
+                            var img = document.getElementById('drapeau');
+                            img.src = data.drapeau_url;
+                            img.style.display = 'block';
+                        }
+
+                        document.getElementById('btn-jouer').href = 'quiz.php?pays_id=' + data.id;
+                    } else {
+                        document.getElementById('nom-pays').textContent = nomPays;
+                        document.getElementById('capitale').textContent = 'Non disponible';
+                        document.getElementById('continent').textContent = 'Non disponible';
+                        document.getElementById('superficie').textContent = 'Non disponible';
+                        document.getElementById('climat').textContent = 'Non disponible';
+                        document.getElementById('drapeau').style.display = 'none';
+                        document.getElementById('btn-jouer').href = 'quiz.php';
+                    }
+
+                    // Scroll vers les infos
+                    box.scrollIntoView({behavior: 'smooth'});
+                });
+            });
         }
-    });
+    }).addTo(carte);
 });
 </script>
 
