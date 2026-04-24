@@ -1,17 +1,9 @@
 <?php
-$host = 'db';
-$dbname = 'geocap';
-$user = 'user';
-$password = 'user';
+$pdo = new PDO(
+    "mysql:host=db;dbname=geocap;charset=utf8mb4",
+    "user",
+    "user"
+);
 
-try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8",
-        $user,
-        $password
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 ?>
