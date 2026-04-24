@@ -1,8 +1,8 @@
 <footer>
     <div class="footer-contenu">
         <div class="footer-col">
-            <h3>GEOCAP</h3>
-            <p>Apprends les capitales du monde tout en t'amusant !</p>
+            <h3>🌍 GEOCAP</h3>
+            <p>Apprends les capitales du monde en t'amusant !</p>
         </div>
         <div class="footer-col">
             <h3>Navigation</h3>
@@ -22,7 +22,7 @@
             </ul>
         </div>
     </div>
-    <p class="copyright">© 2026 GEOCAP — Kryslénie Pierre Louis — DSP09</p>
+    <p style="margin-top:20px; opacity:0.6; font-size:13px;">© 2026 GEOCAP — Kryslénie Pierre Louis — DSP09</p>
 </footer>
 <script src="assets/js/script.js"></script>
 </body>
